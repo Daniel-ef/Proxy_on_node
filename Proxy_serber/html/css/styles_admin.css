@@ -1,0 +1,95 @@
+#top{
+    text-align:left;
+    height: 190px;
+    width: 100%;
+    border-left: groove seagreen 5px;
+    border-right: groove seagreen 5px;
+    border-bottom: double seagreen 5px;
+    background: url(img/blue.jpg) 100% 100% no-repeat;
+    background-size: cover;
+    position: absolute;
+    z-index: 1000;
+}
+
+#left{
+    background: url(img/colors.jpg) 100% 100% no-repeat;
+    background-size: cover;
+    position: fixed;
+    width:17%;
+    height: 100%;
+}
+
+#right{
+    position: absolute;
+    top: 190px;
+    left:17%;
+    width: 83%;
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-bottom: 50px;
+}
+
+#center{
+    color:red;
+    font-size: 70px;
+    text-align: center;
+}
+
+.text1{
+    font-size:16px;
+    font-family: Arial;
+}
+
+.rlist{
+    left: 20%;
+    font-size:14px;
+    font-family: Arial;
+}
+
+.llist{
+    right: 20%
+font-size: 14px;
+    font-family: Arial;
+}
+
+.big{
+    font-size: 26pt;
+    font-family: Arial;
+}
+
+.radi{
+    display:block;
+    position:relative;
+}
+
+#dl_all{
+    width:auto;
+    padding-left: 30px;
+    height:300px;
+    overflow: auto;
+    border: 2px solid black;
+}
+
+#dl_group{
+    width:auto;
+    padding-left: 30px;
+    height:300px;
+    overflow: auto;
+    border: 2px solid black;
+}
+
+#del_all{
+    width:auto;
+    padding-left: 30px;
+    height:300px;
+    overflow: auto;
+    border: 2px solid black;
+}
+
+#del_group{
+    width:auto;
+    padding-left: 30px;
+    height:300px;
+    overflow: auto;
+    border: 2px solid black;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles_admin.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/Information.js" type="text/javascript"></script>
+    <link rel="icon" type="image/png" href="favicon.ico" />
+    <title></title>
+</head>
+<body onload="fill_in4()" style="background-color:#F5F5DC">
+<div class="hero-unit" id="top">
+    <p id ='center'>Статистика и Управление</p>
+    <br></br>
+    <div style="padding-left: 20%">
+        <a type="button" class="btn btn-warning" href="admin-main.html">Общая</a>
+        <a type="button" class="btn btn-warning" href="admin-list_of_libs.html">Список библиотек</a>
+        <a type="button" class="btn btn-warning" href="admin-download_delete.html">Загрузка и удаление</a>
+        <a type="button" class="btn btn-danger" href="admin-set_cache.html">Кэш</a>
+        <a type="button" class="btn btn-warning" href="admin-sys_sets.html">Системные</a>
+        <a type="button" class="btn btn-default" href = "index.html">Выход</a>
+    </div>
+</div>
+
+<div id="left">
+</div>
+
+<div id="right">
+    <table width="100%" cols="2" border="2px" bgcolor="black" rules="rows">
+        <tr>
+            <td>
+                <button class="btn btn-primary" onclick="infin()">Неограниченный кэш</button>
+                <input type="checkbox" id="infin_check" disabled/>
+                <br></br>
+                <button class="btn btn-primary" onclick="limit()">Ограничить кэш</button>
+                <input type="checkbox" id="limit_check" disabled/>
+                <br></br>
+                <p style="font-size:14pt; font-family: Arial">Выберите объём кэша<input style="text-align:right; width:70pt" type="text" id="vol"/>кб </p>
+            </td>
+            <td>
+                <p style="font-size:16pt; font-family: Arial">Выберите критерий удаления библиотек:</p>
+                <div style="border: 2px solid black; width:400px" >
+                    <label class="radi">
+                        <input type="radio" name="Cash" id="Cash1" value="option1"/>
+                        Удаляется использованная <strong>позже</strong> всех
+                    </label>
+                    <label class="radi">
+                        <input type="radio" name="Cash" id="Cash2" value="option2"/>
+                        Удаляется использованная <strong>реже</strong> всех
+                    </label>
+                    <label class="radi">
+                        <input type="radio" name="Cash" id="Cash3" value="option3"/>
+                        Удаляется использующая <strong>меньше</strong> всего памяти
+                    </label>
+                    <label class="radi">
+                        <input type="radio" name="Cash" id="Cash4" value="option4"/>
+                        Удаляется использующая <strong>больше</strong> всего памяти
+                    </label>
+                </div>
+                <br></br>
+                <button class="btn btn-primary" style="top:40px; " id="check_radio" onclick="radio()">Выбрать</button>
+                <form id="sys1" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                </form>
+                <br></br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Библиотеки какого минимального размера загружать?</h4>
+                <p><input type="text" style="width:100px;text-align: right;color:black;font-size:12pt" id ='min_length'/>Кб</p>
+                <p>(0 - загружать все)</p>
+                <br></br>
+                <button class="btn btn-primary" onclick="min_len()">Выбрать</button>
+                <form id="sys7" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                </form>
+                <br></br>
+            </td>
+            <td>
+                <h4>Обновить библиотеки сейчас?</h4>
+                <button class="btn btn-primary" onclick="update_libs()">Обновить</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Не кэшировать на этих сайтах:</h4>
+                <textarea cols="50" rows="5" id="not_cash"></textarea>
+                <br></br>
+                <button class="btn btn-primary" onclick="dont_cash()">Сохранить</button>
+                <br></br>
+                <form id="sys9" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                </form>
+            </td>
+            <td>
+
+                <h4>Хотите загрузить ещё билиотек?</h4>
+                <textarea cols="50" rows="5" id="links"></textarea>
+                <br></br>
+                <button class="btn btn-primary" onclick="add_link()">Добавить</button>
+                <br></br>
+                <form id="sys6" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                </form>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>

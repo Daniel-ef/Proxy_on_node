@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles_admin.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/Information.js" type="text/javascript"></script>
+    <title></title>
+</head>
+<body onload="fill_in5()" style="background-color:#F5F5DC">
+<div class="hero-unit" id="top">
+    <p id ='center'>Статистика и Управление</p>
+    <br></br>
+    <div style="padding-left: 20%">
+        <a type="button" class="btn btn-warning" href="admin-main.html">Общая</a>
+        <a type="button" class="btn btn-warning" href="admin-list_of_libs.html">Список библиотек</a>
+        <a type="button" class="btn btn-warning" href="admin-download_delete.html">Загрузка и удаление</a>
+        <a type="button" class="btn btn-warning" href="admin-set_cache.html">Кэш</a>
+        <a type="button" class="btn btn-warning" href="admin-sys_sets.html">Системные</a>
+        <a type="button" class="btn btn-default" href = "index.html">Выход</a>
+    </div>
+</div>
+
+<div id="left">
+</div>
+
+<div id="right">
+    <table width="100%" cols="2" align="left">
+        <tr>
+            <td valign="top">
+                <p class="big">Порты:</p>
+                <p class="text1">Выберите порт для js-сервера(1024-65535)<input type="number" value="8000" style="text-align:right; width: 60pt" id="port_js"/></p>
+                <p class="text1">Выберите порт для интерфейса(1024-65535)<input type="number" value="8080" style="text-align:right; width: 60pt" id="port_int"/></p>
+                <button id="but_port_int" class="btn btn-primary" onclick="send_port()">Выбрать</button>
+                <form id="suc1" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                    <p style="color: red; font-size: 10pt; font-family: Arial">Для того чтобы изменения вступили в силу необходимо перезапустить программу</p>
+                </form>
+                <br></br>
+
+                <p class="big">Смена пароля:</p>
+                <p class="text1">Старый пароль       :<input type="password" id="old_pass"/></p>
+                <p class="text1">Введите новый пароль:<input type="password" id="new_pass"/></p>
+                <p class="text1">Введите ещё раз     :<input type="password" id="new_pass_ag"/></p>
+                <button class="btn btn-primary" onclick="change_pass()">Сменить</button>
+                <form id="suc2" style="display:none" class="form-horizontal">
+                    <p style="color:green">Сменено</p>
+                    <p style="color: red; font-size: 10pt; font-family: Arial">Для того чтобы изменения вступили в силу необходимо перезапустить программу</p>
+                </form>
+                <br></br>
+                <p class="big">Частота обновления библиотек</p>
+                <p style="font-size: 16px; font-family: Arial">Каждые:<select>
+                    <option id="up1" value="1">День</option>
+                    <option id="up2" value="3">3 дня</option>
+                    <option id="up3" value="5">5 дней</option>
+                    <option id="up4" value="7">Неделю</option>
+                </select></p>
+                <p>Обновлять при запуске программы?<input type="checkbox" id="up_by_push" checked/></p>
+                <button class="btn btn-primary" onclick="update()">Обновить</button>
+                <form id="suc3" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                    <p style="color: red; font-size: 10pt; font-family: Arial">Для того чтобы изменения вступили в силу необходимо перезапустить программу</p>
+                </form>
+                </td>
+
+            <td valign="top">
+                <table>
+                    <tr>
+                        <td>
+                <p class="big">Чёрный список</p>
+                <textarea cols="20" rows="10" id="b_l" ></textarea>
+                <br></br>
+                <button class="btn btn-primary" onclick="black_list()">Отправить</button>
+
+                        </td>
+                        <td>
+                            <div style="color:grey; font-size:12pt;text-align:center">
+                            <p><strong>Правила ввода, примеры</strong></p>
+                            <p>yandex.ru</p>
+                            <p>www.yandex.ru</p>
+                            <p>http://www.yandex.ru</p>
+                                </div>
+                         </td>
+
+                    </tr>
+                </table>
+                <form id="suc4" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                    <p style="color: red; font-size: 10pt; font-family: Arial">Для того чтобы изменения вступили в силу необходимо перезапустить программу</p>
+                </form>
+                <br></br>
+                <h2>Сброс настроек</h2>
+                <p style="font-family: Arial;font-size:16px"><input type="checkbox" id="clear_cash"/>  Очистить кэш полностью</p>
+                <p style="font-family: Arial;font-size:16px"><input type="checkbox" id="clear_sets"/>  Сбросить все настройки</p>
+                <button class="btn btn-primary" onclick="clear_it()">Выполнить</button>
+                <form id="suc8" style="display:none" class="form-horizontal">
+                    <p style="color:green">Отправлено</p>
+                </form>
+            </td>
+
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+import os
+import re
+import urllib.request
+import sys
+import hashlib
+import pickle
+import time
+import requests
+import threading
+################### Global
+
+with open('/home/ubuntu/Python needs/dictionary', 'rb') as g:
+    hash_mas = pickle.load(g)
+
+Lastname = ''
+Library = '/home/ubuntu/Python needs/Library/'
+Usage = '/home/ubuntu/Python needs/Usage.txt'
+
+request = """
+HTTP/1.1 200 OK
+Age: 48001
+Whom: MyScript!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Server: GFE/2.0
+Alternate-Protocol: 80:quic
+
+"""
+#####################
+def _data_count(self, data):
+    Data = '/home/ubuntu/Python needs/Data_Count.txt'
+    with open(Data, 'r') as f:
+        count = int(f.read())
+        count += sys.getsizeof(data)
+        os.remove(Data)
+    with open(Data, 'w') as g:
+        g.write(str(count))
+
+def _length(self, data):
+    resolve = data.decode('latin-1')
+    resolv = resolve.split('\n')
+    for i in range(len(resolv)):
+        s = resolv[i]
+        if s.find('Content-Length:') != -1:
+            n = s[s.find('Content-Length:')+16:]
+            if int(n) > 20000:
+                return True
+    return
+
+def _intercepter(self, data):
+    resolve = data.decode('latin-1')
+    s = resolve.split('\n')
+    for i in range(len(s)):
+        try:
+            if s[i].find('\r') != -1 and s[i+1].find('\r') == 0:
+                s.insert(i+1, 'Whom: My Proxy-Server$$$$$$$$$$$$$$$$$$$$$$$$$$$$\r')
+                break
+        except:
+            continue
+    data = '\n'.join(s)
+    data = bytes(data, encoding='latin-1')
+    return data
+
+def _Usage(allname):
+    global Usage
+    with open(Usage, 'r') as u:
+        ul = u.read()
+        size = int(ul)
+        size += os.path.getsize(allname)
+        os.remove(Usage)
+        with open(Usage, 'w') as h:
+            h.write(str(size))
+
+
+def _dic_of_links(allname, url):
+    ##############################################Словарь {имя: [ссылки]}
+    with open('/home/ubuntu/Python needs/dic of links', 'rb') as f:
+        dic_of_links = pickle.load(f)
+
+    if allname in dic_of_links.keys() and url not in dic_of_links.get(allname):
+        mas = list(dic_of_links.get(allname))
+        mas.append(url)
+        jn = {allname: mas}
+        dic_of_links.update(jn)
+        with open('/home/ubuntu/Python needs/dic of links', 'wb') as f:
+            pickle.dump(dic_of_links, f)
+    elif allname not in dic_of_links.keys():
+        jn = {allname: url}
+        dic_of_links.update(jn)
+        with open('/home/ubuntu/Python needs/dic of links', 'wb') as f:
+            pickle.dump(dic_of_links, f)
+
+    ##############################################Словарь {ссылка: имя}
+    with open('/home/ubuntu/Python needs/dic of names', 'rb') as f:
+        dic_of_names = pickle.load(f)
+
+    if url not in dic_of_names:
+        gh = {url: allname}
+        dic_of_names.update(gh)
+        with open('/home/ubuntu/Python needs/dic of names', 'wb') as f:
+            pickle.dump(dic_of_names, f)
+
+def _Updating():
+    with open('/home/ubuntu/Python needs/mods', 'rb') as f:
+        mods = pickle.load(f)                                           # Словарь {ссылка:последнее изменение}
+    with open('/home/ubuntu/Python needs/dic of links', 'rb') as f:
+        dic_of_links = pickle.load(f)                                   # Словарь {имя:ссылки}
+    with open('/home/ubuntu/Python needs/dic of names', 'rb') as f:
+        dic_of_names = pickle.load(f)                                   # Словарь {ссылка:имя}
+
+    links_f = list(dic_of_links.values())
+    links = []
+
+    ######################################## Преобразуем в список ссылок
+    for i in range(len(links_f)):
+        if type(links_f[i]) == list:
+            for k in range(len(links_f[i])):
+                links.append(links_f[i][k])
+        else:
+            links.append(links_f[i])
+    ########################################
+    print('Starting')
+    for i in range(len(links)):
+        link = links[i]           #ссылка
+
+        if link in mods.keys():
+            last_mod = requests.head(link).headers['last-modified'] #последнее изменение(дата)
+
+            if mods.get(link) != last_mod:
+                ######################################################################   Update js
+                allname = dic_of_names.get(link)
+                th = urllib.request.urlretrieve(link, '/home/ubuntu/Python needs/Library/' + allname)
+                print('Download finished (updating)')
+                with open('/home/ubuntu/Python needs/dic of links', 'wb') as f:
+                    pickle.dump(mods, f)
+
+        else:
+            last_mod = requests.head(link).headers['last-modified'] #последнее изменение(дата)
+            ad = {link: last_mod}
+            mods.update(ad)
+            with open('/home/ubuntu/Python needs/mods', 'wb') as f:
+                pickle.dump(mods, f)
+    print('finished')
+
+def _time_up(s):
+    # s[0] Day
+    # s[1] Month
+    # s[2] Year
+    # time.gmtime(time.time())[2] Day
+    # time.gmtime(time.time())[1] Month
+    # time.gmtime(time.time())[0] Year
+    while True:
+        print('Need Update?')
+        if time.gmtime(time.time())[2] >= s[0]: #Day
+            print('ya')
+            s[0] = time.gmtime(time.time())[2] + 1
+            print(s)
+            with open('/home/ubuntu/Python needs/time', 'wb') as f:
+                pickle.dump(s, f)
+            _Updating()
+
+        elif time.gmtime(time.time())[1] > s[1]: #Month
+            print('ya')
+            s[0] = time.gmtime(time.time())[2] + 1
+            s[1] = time.gmtime(time.time())[1]
+            with open('/home/ubuntu/Python needs/time', 'wb') as f:
+                pickle.dump(s, f)
+            _Updating()
+
+        elif time.gmtime(time.time())[0] > s[2]: #Year
+            print('ya')
+            s[0] = time.gmtime(time.time())[2] + 1
+            s[1] = time.gmtime(time.time())[1]
+            s[2] = time.gmtime(time.time())[0]
+            with open('/home/ubuntu/Python needs/time', 'wb') as f:
+                pickle.dump(s, f)
+            _Updating()
+        else:
+            print('Neee')
+        time.sleep(60*60*24)
+
+
+def _Lastname(self, path):
+    global request
+    global Library
+    global Usage
+    global Lastname
+    if (Lastname[:Lastname.find('@')] in path) and (Lastname[Lastname.find('@')+1:Lastname.rfind('.js')] in path) and (Lastname != ''):
+        try:
+            with open(Library + Lastname, 'r') as j:
+                jq = j.read()
+                print('Uploading js from Lastversion...' + Lastname)
+                self.client.send(bytes((request+jq), encoding="latin-1"))
+                return True
+        except:
+            print('Uploading fall')
+            return False
+
+def _hard_ad(self, allname):
+    global request
+    global Library
+    global Usage
+    global Lastname
+    with open(Library + allname, 'r') as j:
+        _Usage(Library+allname)
+        jq = j.read()
+        print('Uploading js...' + allname)
+        Lastname = allname
+        self.client.send(bytes((request+jq), encoding="latin-1"))
+    return True
+
+def _hard_simple(self, allname):
+    global request
+    global Library
+    global Usage
+    global Lastname
+    with open(Library + allname, 'r') as j:
+        _Usage(Library + allname)
+        jq = j.read()
+        print('Uploading js...' + allname)
+        Lastname = allname
+        self.client.send(bytes((request+jq), encoding="latin-1"))#Uploading
+        j.close()
+        return True
+
+def _net_ad(filename, version, url):
+    s = url[url.rfind('/')+1:]
+    for i in range(len(s)):
+        if re.match('[0-9]', s[i]):
+            version = s[i:]
+            break
+    allname = filename + '@' + version + '.js'
+    print(allname, url)
+    allpath = Library + allname                 # Путь библиотеки
+
+    try:
+        file = urllib.request.urlretrieve(url, allpath)
+        print('Download finished!!!, ad', url, allpath)
+        with open(allpath, 'r') as f:
+            hah = hashlib.md5(f.read()).hexdigest()
+        # Проверка хеш-суммы--------------
+        if hah in hash_mas.keys():
+            os.remove(allpath)
+            resource = Library + hash_mas.get(hah)[0]
+            hah_old = list(hash_mas.get(hah))
+            hah_old.append(allname)
+            hash_mas.update({hah: hash_old}) #Добавление нового имени библиотеки в словарь
+            os.symlink(resource, allpath)
+        else:
+            dictt = {hah: allname}
+            hash_mas.update(dictt)
+        #----------------------------------
+        Lastname = allname
+        return True
+    except:
+        print('Downloadin fall (ad)')
+        return False
+
+def _net_simple(url):
+    global Library
+    global Usage
+    global Lastname
+    global hash_mas
+    u = url
+    name = url[url.rfind('/')+1:]
+    path = Library
+    while True:
+        s = url[url.rfind('/'):]
+        if re.match('[0-9]', s[1]) or re.match('[0-9]', s[-1]):
+            path = path + name +'@' + s[1:]+'.js'
+            try:
+                file = urllib.request.urlretrieve(u, path)
+                print('Downloading finished!, simple', u)
+                # Проверка хеш-суммы--------------
+                with open(allpath, 'r') as f:
+                    hah = hashlib.md5(f.read()).hexdigest()
+                if hah in hash_mas.keys():
+                    os.remove(allpath)
+                    resource = Library + hash_mas.get(hah)[0]
+                    hah_old = list(hash_mas.get(hah))
+                    hah_old.append(allname)
+                    hash_mas.update({hah: hash_old}) #Добавление нового имени библиотеки в словарь
+                    os.symlink(resource, allpath)
+                else:
+                    dictt = {hah: allname}
+                    hash_mas.update(dictt)
+                #----------------------------------
+                Lastname = path[path.rfind('/')+1:]
+                return True
+            except:
+                print('Downloading fall, simple', u, path)
+                return False
+        url = url[:url.rfind('/')]
+
+def _download_new(self, path):
+    global Library
+    url = path
+    if len(url[url.rfind('/')+1:]) == url[url.rfind('/')+1:].find('.js')+3:
+        name = path[path.rfind('/')+1:]
+        path = path[:path.rfind('/')]
+        ver = path[path.rfind('/')+1:]
+        allname = name + '@' + ver + '.js'
+    else:
+        path = path[path.rfind('/')+1:]
+        name = path[:path.rfind('.js')+3]
+        version = path[path.find('.js')+3:]
+        for i in range(len(path)):
+            if re.match('[0-9]', path[i]):
+                version = path[i:]
+                break
+        allname = name + '@' + version + '.js'
+    try:
+        file = urllib.request.urlretrieve(url, Library + allname)
+        print('Download finished!', allname)
+    except:
+        print('Download fall!')
+
+
+
+def _substitute_CDN(self, host, path, method):
+    if method == 'HEAD':
+        return False
+
+    global Lastname
+    global request
+    global Library
+    global Usage
+
+    filelist = os.listdir(Library)
+
+############################################################################## Taking from hard'  Lastversion
+    if _Lastname(self, path) == True:
+        return True
+
+############################################################################## Taking from hard
+    for i in range(len(filelist)):
+        allname = filelist[i]
+        k = allname.find('@')
+        filename = allname[:k]
+        version = allname[k+1:-3]
+        link = 'http://'+ host + path
+        if (filename == path[path.rfind('/')+1:path.rfind('.js')+3]) and (version in path) and ((len(path) - path.rfind('/')-1) != len(filename)):
+            if _hard_ad(self, allname) == True:
+
+                _dic_of_links(allname, link)
+                return True
+
+        elif (filename == path[path.rfind('/')+1:path.rfind('.js')+3]) and (version in path) and ((len(path) - path.rfind('/')-1) == len(filename)):
+            if _hard_simple(self, allname) == True:
+
+                _dic_of_links(allname, link)
+                return True
+
+############################################################################### Taking from net
+    for p in range(len(filelist)):
+        allname = filelist[p]
+        k = allname.find('@')
+        filename = allname[:k]
+        version = allname[k+1:-3]
+        url = 'http://' + host + path
+
+        ################################# Long path
+        if (filename == path[path.rfind('/')+1:path.rfind('.js')+3]) and ((len(path) - path.rfind('/')-1) != len(filename)) and (version not in path):
+            print('Poshlo, ad')
+            if _net_ad(filename, version,  url) == True:
+                _dic_of_links(allname, url)
+                return False
+
+        ################################# Simple path
+        elif (filename == path[path.rfind('/')+1:path.rfind('.js')+3]) and (version not in path):
+            print('Poshlo, simple')
+            url = 'http://' + host + path
+            if _net_simple(url) == True:
+                _dic_of_links(allname, url)
+                return False
+
+
+    return False

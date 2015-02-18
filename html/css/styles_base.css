@@ -1,0 +1,13 @@
+#center {
+    text-align: center;
+    border-left: double seagreen 10px;
+    border-right: double seagreen 10px;
+    border-bottom: double seagreen 10px;
+    height:300px;
+    background: url(img/up.jpg) 100% 100% no-repeat;
+    background-size: cover;
+}
+
+p{
+    color:yellow;
+}

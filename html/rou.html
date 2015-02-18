@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function getXmlHttp(){
+            var xmlhttp;
+            try {
+                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (E) {
+                    xmlhttp = false;
+                }
+            }
+            if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+                xmlhttp = new XMLHttpRequest();
+            }
+            return xmlhttp;
+        }
+
+        function lib(){
+            var xmlhttp = getXmlHttp();
+            xmlhttp.open('GET', 'http://127.0.0.1:8080/pum', true);
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == 4) {
+                    if(xmlhttp.status == 200) {
+                        if(document.getElementById('1').checked){alert('1')}
+                    }
+                }
+            };
+            xmlhttp.send(null);
+            window.onbeforeunload=function(){alert('before')}
+        }
+    </script>
+</head>
+<body onload="lib()">
+<div id="di">
+<p>Ой щас что-то будет!!!</p>
+    <label class="checkbox">
+        <input id="1" type="checkbox" value="">
+        А вот вам опция номер один - очень крутая штука.
+    </label>
+<button onclick="lib()">Push</button>
+</div>
+
+</body>
+</html>

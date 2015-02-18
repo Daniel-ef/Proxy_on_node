@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="stylesheet" href="css/styles_base.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/Information.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <script>
+        function disp(form) {
+            if (form.style.display == "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+    <title></title>
+</head>
+<body>
+<div id="center" class="hero-unit">
+    <br></br>
+    <p style="font-size: 50px">Здравствуйте!</p>
+    <p style="font-size:25px">Выберите, с какими правами вы хотите зайти:</p>
+    <a class="btn btn-large btn-success" href="user-main.html">Пользователь</a>
+
+    <input class="btn btn-large btn-warning" type="button" value="Администратор" onclick="disp(document.getElementById('form1'))" />
+
+    <form action="" style="display:none" id="form1" class="form-horizontal">
+        <br></br>
+        <input type="password" class="input-small" id="pass" placeholder="Пароль" value="1234567"/>
+        <input type="button" class="btn btn-danger  " value="Отправить" onclick="Submitting()"/>
+    </form>
+
+
+
+
+</div>
+</body>
+</html>
